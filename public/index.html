@@ -101,7 +101,7 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    const socket = io();
+    const socket = io({ transports: ['websocket'] });
     const codeInput = document.getElementById('code-input');
     const nameInput = document.getElementById('name-input');
     const joinBtn = document.getElementById('join-btn');

@@ -14,7 +14,11 @@ process.on('unhandledRejection', (err) => {
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+  transports: ['websocket'],
+  pingTimeout: 30000,
+  pingInterval: 10000
+});
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));

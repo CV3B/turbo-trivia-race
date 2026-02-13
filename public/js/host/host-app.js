@@ -1,6 +1,6 @@
 // Host application - main controller
 (function () {
-  const socket = io();
+  const socket = io({ transports: ['websocket'] });
   let roomCode = null;
   let gameState = null;
   let answerCount = 0;

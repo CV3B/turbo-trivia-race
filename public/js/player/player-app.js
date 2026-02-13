@@ -10,7 +10,7 @@ const PlayerApp = {
   screens: ['join-screen', 'waiting-screen', 'game-screen', 'minigame-screen', 'results-screen', 'player-victory-screen'],
 
   init() {
-    this.socket = io();
+    this.socket = io({ transports: ['websocket'] });
     this.setupSocketEvents();
     this.setupUI();
 
