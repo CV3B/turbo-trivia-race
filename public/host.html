@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Turbo Trivia Race - Host</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='6' width='12' height='6' rx='1' fill='%2300ccff'/><rect x='1' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='12' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='8' y='4' width='5' height='4' rx='1' fill='%2300ccff' opacity='.7'/></svg>">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/host.css">
+</head>
+<body>
+  <div id="host-app">
+    <!-- Create screen -->
+    <div id="create-screen" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:20px;">
+      <h1>Turbo Trivia Race</h1>
+      <p style="font-size:0.5rem;color:var(--text-secondary);">Host Dashboard</p>
+      <button class="btn btn-primary btn-large" id="create-btn">Create Game</button>
+    </div>
+
+    <!-- Lobby screen -->
+    <div id="lobby-screen" class="hidden">
+      <div class="lobby-code-display">
+        <p>Join at this address with code:</p>
+        <div class="room-code" id="room-code-display"></div>
+        <div class="lobby-url" id="lobby-url"></div>
+      </div>
+
+      <div class="team-setup">
+        <h3 style="text-align:center;margin-bottom:10px;">Number of Teams</h3>
+        <div class="team-count-selector" id="team-count-selector">
+          <button class="btn team-count-btn" data-count="1">1</button>
+          <button class="btn team-count-btn active" data-count="2">2</button>
+          <button class="btn team-count-btn" data-count="3">3</button>
+          <button class="btn team-count-btn" data-count="4">4</button>
+          <button class="btn team-count-btn" data-count="5">5</button>
+          <button class="btn team-count-btn" data-count="6">6</button>
+          <button class="btn team-count-btn" data-count="7">7</button>
+          <button class="btn team-count-btn" data-count="8">8</button>
+        </div>
+
+        <div class="unassigned-players" id="unassigned-section">
+          <h3>Waiting to be assigned</h3>
+          <div class="unassigned-list" id="unassigned-list"></div>
+        </div>
+
+        <div class="teams-grid" id="teams-grid"></div>
+      </div>
+
+      <div class="lobby-actions">
+        <button class="btn" id="auto-assign-btn">Auto Assign</button>
+        <button class="btn btn-primary btn-large" id="start-btn">Start Race</button>
+      </div>
+    </div>
+
+    <!-- Race screen -->
+    <div id="race-screen" class="hidden">
+      <div class="host-header">
+        <h1>Turbo Trivia Race</h1>
+        <div class="room-code" id="header-room-code" style="font-size:0.8rem;"></div>
+      </div>
+      <div class="canvas-container" id="canvas-container">
+        <canvas id="race-canvas"></canvas>
+        <div class="round-counter" id="round-counter">Round 1</div>
+        <div class="race-sidebar" id="race-sidebar"></div>
+        <div class="question-overlay hidden" id="question-overlay">
+          <div class="timer-bar-container">
+            <div class="timer-bar" id="host-timer-bar"></div>
+          </div>
+          <div class="question-text" id="host-question-text"></div>
+          <div class="options-grid" id="host-options-grid"></div>
+          <div class="answer-count" id="answer-count"></div>
+        </div>
+        <div class="minigame-overlay hidden" id="minigame-overlay">
+          <div class="timer-bar-container">
+            <div class="timer-bar" id="minigame-timer-bar"></div>
+          </div>
+          <h2 id="minigame-title"></h2>
+          <div class="question-text" id="minigame-description"></div>
+          <div class="minigame-status" id="minigame-status"></div>
+        </div>
+        <div class="results-overlay hidden" id="results-overlay"></div>
+      </div>
+    </div>
+
+    <!-- Victory screen -->
+    <div id="victory-screen" class="hidden">
+      <div class="victory-title">WINNER!</div>
+      <div class="winner-name" id="winner-name"></div>
+      <div class="final-standings" id="final-standings"></div>
+      <button class="btn btn-primary btn-large" id="play-again-btn">Play Again</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/shared/utils.js"></script>
+  <script src="/js/host/sound-manager.js"></script>
+  <script src="/js/host/animation.js"></script>
+  <script src="/js/host/race-renderer.js"></script>
+  <script src="/js/host/ui-manager.js"></script>
+  <script src="/js/host/host-app.js"></script>
+</body>
+</html>

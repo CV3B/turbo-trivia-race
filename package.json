@@ -1,0 +1,24 @@
+{
+  "name": "claudegameshows",
+  "version": "1.0.0",
+  "description": "Turbo Trivia Race - Multiplayer car race game show",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^4.22.1",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

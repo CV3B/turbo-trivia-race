@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Turbo Trivia Race</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='6' width='12' height='6' rx='1' fill='%2300ccff'/><rect x='1' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='12' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='8' y='4' width='5' height='4' rx='1' fill='%2300ccff' opacity='.7'/></svg>">
+  <link rel="stylesheet" href="/css/common.css">
+  <style>
+    .landing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 30px 20px;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .title-section h1 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 0.5rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .join-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .join-section input {
+      width: 100%;
+    }
+
+    .or-divider {
+      font-size: 0.5rem;
+      color: var(--text-secondary);
+      margin: 10px 0;
+    }
+
+    .host-link {
+      font-size: 0.5rem;
+      color: var(--neon-pink);
+      text-decoration: none;
+    }
+
+    .host-link:hover {
+      text-shadow: var(--glow-pink);
+    }
+
+    .error-text {
+      color: var(--neon-red);
+      font-size: 0.5rem;
+      min-height: 1em;
+    }
+
+    .car-art {
+      font-size: 0.4rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      white-space: pre;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="landing">
+    <div class="title-section">
+      <h1>Turbo Trivia Race</h1>
+      <p class="subtitle">Answer trivia. Race cars. Win glory.</p>
+    </div>
+
+    <div class="join-section">
+      <input type="text" id="code-input" placeholder="ROOM CODE" maxlength="4" autocomplete="off" autocapitalize="characters">
+      <input type="text" id="name-input" placeholder="Your Name" maxlength="16" autocomplete="off">
+      <button class="btn btn-primary btn-large" id="join-btn">Join Game</button>
+      <p class="error-text" id="error-text"></p>
+    </div>
+
+    <div class="or-divider">- or -</div>
+
+    <a href="/host" class="host-link">Host a new game</a>
+
+    <div class="car-art">
+    ____
+   /|  |\
+  /_|__|_\
+  |_o__o_|
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const codeInput = document.getElementById('code-input');
+    const nameInput = document.getElementById('name-input');
+    const joinBtn = document.getElementById('join-btn');
+    const errorText = document.getElementById('error-text');
+
+    // Auto-uppercase room code
+    codeInput.addEventListener('input', () => {
+      codeInput.value = codeInput.value.toUpperCase().replace(/[^A-Z]/g, '');
+    });
+
+    joinBtn.addEventListener('click', joinGame);
+
+    // Allow Enter key
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') joinGame();
+    });
+    codeInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') nameInput.focus();
+    });
+
+    function joinGame() {
+      const code = codeInput.value.trim();
+      const name = nameInput.value.trim();
+
+      if (!code || code.length !== 4) {
+        errorText.textContent = 'Enter a 4-letter room code';
+        return;
+      }
+      if (!name) {
+        errorText.textContent = 'Enter your name';
+        return;
+      }
+
+      errorText.textContent = '';
+      joinBtn.disabled = true;
+      joinBtn.textContent = 'Joining...';
+
+      const reconnectToken = sessionStorage.getItem('reconnectToken');
+
+      socket.emit('player:join', { code, name, reconnectToken }, (response) => {
+        if (response.error) {
+          errorText.textContent = response.error;
+          joinBtn.disabled = false;
+          joinBtn.textContent = 'Join Game';
+          return;
+        }
+
+        // Store reconnect info
+        sessionStorage.setItem('reconnectToken', response.reconnectToken);
+        sessionStorage.setItem('roomCode', code);
+        sessionStorage.setItem('playerName', name);
+
+        // Redirect to player page
+        window.location.href = `/player?code=${code}`;
+      });
+    }
+
+    // Check for reconnect
+    const savedCode = sessionStorage.getItem('roomCode');
+    const savedName = sessionStorage.getItem('playerName');
+    if (savedCode) codeInput.value = savedCode;
+    if (savedName) nameInput.value = savedName;
+  </script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+  <title>Turbo Trivia Race - Player</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect x='2' y='6' width='12' height='6' rx='1' fill='%2300ccff'/><rect x='1' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='12' y='10' width='3' height='3' rx='1' fill='%23333'/><rect x='8' y='4' width='5' height='4' rx='1' fill='%2300ccff' opacity='.7'/></svg>">
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/player.css">
+</head>
+<body>
+  <div id="player-app">
+    <!-- Join screen (if coming directly) -->
+    <div id="join-screen">
+      <h1>Turbo Trivia Race</h1>
+      <div class="join-form">
+        <input type="text" id="room-code-input" placeholder="CODE" maxlength="4" autocomplete="off" autocapitalize="characters">
+        <input type="text" id="player-name-input" placeholder="Your Name" maxlength="16" autocomplete="off">
+        <button class="btn btn-primary btn-large" id="join-btn">Join</button>
+        <p class="join-error" id="join-error"></p>
+      </div>
+    </div>
+
+    <!-- Waiting for host screen -->
+    <div id="waiting-screen" class="hidden">
+      <h2 id="player-name-display"></h2>
+      <div class="team-badge hidden" id="team-badge"></div>
+      <p class="waiting-text">Waiting for host to start...</p>
+      <p style="font-size:0.5rem;color:var(--text-secondary);margin-top:10px;" id="room-code-show"></p>
+    </div>
+
+    <!-- Game screen (trivia) -->
+    <div id="game-screen" class="hidden">
+      <div class="player-timer">
+        <div class="timer-bar-container">
+          <div class="timer-bar" id="player-timer-bar"></div>
+        </div>
+      </div>
+      <div class="player-question" id="player-question"></div>
+      <div class="answer-grid" id="answer-grid"></div>
+      <div class="answer-feedback hidden" id="answer-feedback"></div>
+    </div>
+
+    <!-- Mini-game screen -->
+    <div id="minigame-screen" class="hidden">
+      <div class="player-timer">
+        <div class="timer-bar-container">
+          <div class="timer-bar" id="minigame-player-timer"></div>
+        </div>
+      </div>
+      <div class="minigame-container" id="minigame-container"></div>
+    </div>
+
+    <!-- Results screen -->
+    <div id="results-screen" class="hidden">
+      <h2 id="result-title"></h2>
+      <div class="result-icon" id="result-icon"></div>
+      <div class="team-progress-player">
+        <div class="progress-bar-large">
+          <div class="fill" id="team-progress-fill"></div>
+        </div>
+        <div class="progress-label" id="team-progress-label"></div>
+      </div>
+    </div>
+
+    <!-- Victory screen -->
+    <div id="player-victory-screen" class="hidden">
+      <div class="victory-title" id="player-victory-title"></div>
+      <div class="victory-message" id="player-victory-message"></div>
+    </div>
+
+    <!-- Disconnected overlay -->
+    <div class="disconnected-overlay hidden" id="disconnected-overlay">
+      <h2>Disconnected</h2>
+      <p class="reconnecting-text">Reconnecting...</p>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/shared/utils.js"></script>
+  <script src="/js/player/trivia-ui.js"></script>
+  <script src="/js/player/minigame-ui.js"></script>
+  <script src="/js/player/player-app.js"></script>
+</body>
+</html>
